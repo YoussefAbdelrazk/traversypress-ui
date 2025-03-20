@@ -27,7 +27,7 @@ export default function Sidebar() {
       </CommandItem>
       <CommandItem>
         <Newspaper />
-        <Link href='/posts'>Newspaper</Link>
+        <Link href='/posts'>Posts</Link>
       </CommandItem>
       <CommandItem>
         <Folders />
