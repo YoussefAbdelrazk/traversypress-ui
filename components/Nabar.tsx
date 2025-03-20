@@ -10,11 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { Darkmode } from './Darkmode';
 
 export default function Nabar() {
   return (
     <div className=' bg-primary dark:bg-slate-700 py-2 px-8  flex justify-between items-center text-white'>
       <Link href='/'>HAZO</Link>
+
+      <div className='flex items-center justify-center space-x-3'>
+        <Darkmode/>
 
       <DropdownMenu>
         <DropdownMenuTrigger>
@@ -37,6 +41,7 @@ export default function Nabar() {
        
         </DropdownMenuContent>
       </DropdownMenu>
+      </div>
     </div>
   );
 }
