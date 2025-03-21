@@ -1,6 +1,9 @@
-import Image from 'next/image';
-import logo from '@/img/hospital-sign-of-letter-h-inside-circles.png';
+'use client';
+
+import { logout } from '@/lib/auth';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Darkmode } from './Darkmode';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
   DropdownMenu,
@@ -10,9 +13,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Darkmode } from './Darkmode';
 
 export default function Nabar() {
+
+
+
+
+  const handleLogout = () => {
+    logout();
+  };
+
+
   return (
     <div className=' bg-primary dark:bg-slate-700 py-2 px-8  flex justify-between items-center text-white'>
       <Link href='/'>HAZO</Link>
@@ -33,12 +44,9 @@ export default function Nabar() {
           <DropdownMenuItem>
             <Link href='/profile'>Profile</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-          <Link href='/auth'>
-          Logout
-          </Link>
+          <DropdownMenuItem onClick={handleLogout}>
+            Logout
           </DropdownMenuItem>
-       
         </DropdownMenuContent>
       </DropdownMenu>
       </div>

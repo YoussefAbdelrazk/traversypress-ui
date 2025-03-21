@@ -1,22 +1,23 @@
 'use client';
 import BackButton from '@/components/BackButton';
 
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Form,
 } from '@/components/ui/form';
-
-import { posts } from '@/data/posts';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { useToast } from '@/components/ui/use-toast';
+import { posts } from '@/data/posts';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { use } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -26,12 +27,15 @@ const formSchema = z.object({
 });
 
 interface EditPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
-export default function editPage({ params }: EditPageProps) {
-  const post = posts.find((post) => post.id === params.id);
+
+export default function EditPage({ params }: EditPageProps) {
+  const resolvedParams = use(params);
+  const post = posts.find((post) => post.id === resolvedParams.id);
+  const { toast } = useToast();
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,19 +45,34 @@ export default function editPage({ params }: EditPageProps) {
       date: post?.date || '',
     },
   });
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    toast.success('Post has been updated successfully',{
-      description:`Updated by ${post?.author} on ${post?.date}`
-      
-    })
-  };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // TODO: Implement actual update logic here
+      toast({
+        title: 'Success',
+        description: 'Post updated successfully.',
+      });
+      router.push('/posts');
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update post. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  }
+
+  if (!post) {
+    return <div>Post not found</div>;
+  }
 
   return (
     <>
       <BackButton text='Back to Posts' link='/posts' />
       <h3 className='text-2xl font-bold mb-4'> Edit Post</h3>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className=' space-y-8'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className=' space-y-8'>
           <FormField
             control={form.control}
             name='title'
