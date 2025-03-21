@@ -149,11 +149,7 @@ export function RegisterForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-gray-500">
-          Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a>
-        </p>
-      </CardFooter>
+     
     </Card>
   );
 } 
